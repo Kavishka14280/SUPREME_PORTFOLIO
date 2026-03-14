@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kavishka Wickrama | Digital Architect</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.fog.min.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;800&family=Playfair+Display:italic,wght@0,900;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        /* Global Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        html { scroll-behavior: auto !important; } /* Disabled for snappy GSAP scroll */
+
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        #vanta-canvas {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+        }
+
+        .text-accent { color: #C19A6B; }
+
+        /* Custom Cursor */
+        #cursor { position: fixed; width: 8px; height: 8px; background-color: #fff; border-radius: 50%; pointer-events: none; z-index: 9999; }
+        #cursor-follower { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; pointer-events: none; z-index: 9998; transition: transform 0.1s ease-out; }
+
+        /* Glassmorphism Effect */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: #C19A6B;
+            transform: translateY(-12px);
+        }
+
+        .reveal { opacity: 0; transform: translateY(40px); }
+
+        /* Modern Image Frame with Glow */
+        .image-container::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            background: linear-gradient(45deg, #C19A6B, transparent, #C19A6B);
+            filter: blur(25px);
+            opacity: 0.2;
+            z-index: -1;
+            border-radius: 2.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="vanta-canvas"></div>
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
+
+    <nav class="flex justify-between items-center px-12 py-10 max-w-[1600px] mx-auto opacity-0 nav-el">
+        <a href="#home" class="nav-link">
+            <img src="logo.png" alt="KW Logo" class="h-24 w-auto hover:scale-105 transition-transform duration-500">
+        </a>
+        <div class="hidden md:flex gap-12 text-[10px] uppercase tracking-[0.4em] font-medium text-gray-400">
+            <a href="#work" class="nav-link hover:text-white transition-colors duration-300">Portfolio</a>
+            <a href="#about" class="nav-link hover:text-white transition-colors duration-300">About</a>
+            <a href="#contact" class="nav-link hover:text-white transition-colors duration-300">Contact</a>
+        </div>
+    </nav>
+
+    <section id="home" class="max-w-[1400px] mx-auto px-10 py-10 min-h-[90vh] flex flex-col justify-center">
+        <h2 class="reveal text-accent text-xs font-bold uppercase tracking-[0.7em] mb-8 italic">Crafting Digital Excellence</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-[1.5fr,1fr] gap-20 items-center">
+            
+            <div class="content-left">
+                <h1 class="reveal text-7xl md:text-[9.5rem] font-extrabold leading-[0.82] tracking-tighter mb-12">
+                    SCULPTING <br> <span class="font-serif italic font-light text-accent">Code</span> INTO <br> Art.
+                </h1>
+
+                <div class="reveal flex flex-col md:flex-row gap-16 items-end">
+                    <p class="max-w-md text-gray-400 text-lg font-light leading-relaxed">
+                        Software Engineering student at Java Institute. Bridging the gap between complex backend logic and immersive UI design.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="https://github.com" target="_blank" class="w-12 h-12 border border-gray-800 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-all duration-500">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://linkedin.com" target="_blank" class="w-12 h-12 border border-gray-800 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-all duration-500">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reveal photo-right relative group flex justify-center">
+                <div class="image-container relative w-full max-w-md aspect-[3/4]">
+                    <div class="relative h-full w-full border border-gray-800 p-2 bg-black/40 shadow-2xl rounded-[2.5rem] overflow-hidden">
+                        <img src="me.jpg" alt="Kavishka Wickrama" class="w-full h-full object-cover grayscale hover:grayscale-0 transition duration-1000 scale-105 hover:scale-100">
+                    </div>
+                    
+                    <div class="absolute -bottom-4 -right-4 bg-accent px-6 py-3 rounded-xl shadow-2xl hidden md:block border border-black/10">
+                        <p class="text-[8px] uppercase tracking-widest font-black text-[#050505]">Engineer '26</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="work" class="max-w-[1400px] mx-auto px-10 py-32 border-t border-gray-900/50">
+        <h3 class="text-xs uppercase tracking-[0.5em] text-gray-500 mb-16 italic underline underline-offset-8">Current Focus & Milestones</h3>
+        
+        <div class="grid md:grid-cols-2 gap-10">
+            <div class="glass-card p-10 rounded-sm">
+                <span class="text-[10px] text-accent font-bold uppercase tracking-widest">Ongoing Development</span>
+                <h4 class="text-3xl font-bold mt-4 mb-6">Finance & Wealth Tracker</h4>
+                <p class="text-gray-500 mb-8 font-light italic leading-relaxed">Currently building a cross-platform mobile app using React Native to visualize stock market data and manage personal assets.</p>
+                <div class="flex items-center gap-2">
+                    <div class="h-[1px] w-12 bg-accent"></div>
+                    <span class="text-[9px] uppercase font-bold text-gray-400">Under Construction</span>
+                </div>
+            </div>
+
+            <div class="glass-card p-10 rounded-sm">
+                <span class="text-[10px] text-accent font-bold uppercase tracking-widest">Academic Portfolio</span>
+                <h4 class="text-3xl font-bold mt-4 mb-6">Enterprise Backend Systems</h4>
+                <p class="text-gray-500 mb-8 font-light italic leading-relaxed">Developing robust enterprise solutions using Java, Hibernate, and JSP/Servlets for high-performance data handling.</p>
+                <div class="flex items-center gap-2">
+                    <div class="h-[1px] w-12 bg-accent"></div>
+                    <span class="text-[9px] uppercase font-bold text-gray-400">Java Institute Projects</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="max-w-[1400px] mx-auto px-10 py-32 border-t border-gray-900">
+        <div class="grid md:grid-cols-2 gap-20 items-center">
+            <h3 class="text-4xl md:text-7xl font-black uppercase leading-[0.9] tracking-tighter">Developing <br> with <span class="text-accent italic font-serif">Intent.</span></h3>
+            <div class="space-y-6">
+                <p class="text-gray-400 text-lg font-light leading-relaxed">
+                    I am Kavishka, a 19-year-old developer specializing in Software Engineering. I view code as a medium to build experiences that are both functional and visually captivating.
+                </p>
+                <p class="text-gray-400 text-lg font-light leading-relaxed">
+                    By integrating my interests in HRM and the Stock Market into my development process, I aim to create tools that empower users financially and professionally.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="px-10 py-32 text-center border-t border-gray-900 bg-black/40">
+        <h2 class="text-5xl md:text-8xl font-black mb-12 tracking-tighter">LET'S START A <br> <span class="text-accent italic font-serif font-light">Conversation.</span></h2>
+        <a href="mailto:kavishka@wickrama.me" class="text-2xl md:text-3xl font-bold border-b-2 border-accent/20 inline-block pb-2 hover:text-accent transition-all duration-500">kavishka@wickrama.me</a>
+        
+        <div class="mt-24 flex flex-col md:flex-row justify-between items-center gap-8 text-gray-600 text-[10px] uppercase tracking-[0.4em] font-bold">
+            <a href="#home" class="nav-link hover:text-white">↑ Back to Top</a>
+            <span>© 2026 Kavishka Wickrama — Sri Lanka</span>
+        </div>
+    </footer>
+
+    <script>
+        // 1. 3D Background Initialization
+        VANTA.FOG({
+            el: "#vanta-canvas",
+            mouseControls: true, touchControls: true,
+            minHeight: 200.00, minWidth: 200.00,
+            highlightColor: 0x1a1a1a, midtoneColor: 0x0c0c0c, lowlightColor: 0x0, baseColor: 0x050505,
+            blurFactor: 0.90, speed: 1.50, zoom: 0.50
+        });
+
+        // 2. Custom Cursor Follower
+        const cursor = document.querySelector("#cursor");
+        const follower = document.querySelector("#cursor-follower");
+        document.addEventListener("mousemove", (e) => {
+            gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
+            gsap.to(follower, { x: e.clientX - 16, y: e.clientY - 16, duration: 0.35, ease: "power2.out" });
+        });
+
+        // 3. Page Load Reveal Animations
+        window.addEventListener('DOMContentLoaded', () => {
+            const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
+            tl.to(".nav-el", { opacity: 1, duration: 1.2 })
+              .to(".reveal", { opacity: 1, y: 0, duration: 1.6, stagger: 0.15 }, "-=0.8");
+        });
+
+        // 4. Snappy Snapping Navigation
+        document.querySelectorAll('.nav-link, a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    gsap.to(window, { 
+                        duration: 0.85, 
+                        scrollTo: { y: targetElement, autoKill: true }, 
+                        ease: "power3.inOut" 
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
